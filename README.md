@@ -22,3 +22,15 @@ the Lagrangrian gradient, γ. Update the Lagrangian Hessian using the BFGS updat
 
 5. Return to Step 1 until ∆x is sufficiently small. When ∆x approaches zero, the K-T
 conditions for the original problem are satisfied.
+
+Example of SQP Algortihm
+
+Find the optimum to the problem:
+
+min f(x) = x1^4 -2*x1*x2^2 + x2^2 + x1^2 -2*x1 +5
+s.t. g(x) = -(x1 + 0.25)^2 + 0.75*x2 >= 0
+
+SQP finds the optimum in 9 iterations.
+
+![image](https://user-images.githubusercontent.com/90531367/170685187-d181d8d8-ef06-409e-b239-ae64332c77e4.png)
+
