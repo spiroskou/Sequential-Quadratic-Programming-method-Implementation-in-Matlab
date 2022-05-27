@@ -14,11 +14,11 @@ initial step is ∆x, and xnew = xold + x. See if at this point a penalty functi
 the values of the objective and violated constraints, is reduced. If not, cut back the step
 size until the penalty function is reduced. The penalty function is given by
 
-P = f + sum(λ*g), 
+  P = f + sum(λ*g), 
 
-where the summation is done over the set of violated constraints, and
-the absolute values of the constraints are taken. The Lagrange multipliers act as scaling
-or weighting factors between the objective and violated constraints.
+  where the summation is done over the set of violated constraints, and
+  the absolute values of the constraints are taken. The Lagrange multipliers act as scaling
+  or weighting factors between the objective and violated constraints.
 
 4. Evaluate the Lagrangian gradient at the new point. Calculate the difference in x and in
 the Lagrangrian gradient, γ. Update the Lagrangian Hessian using the BFGS update.
