@@ -28,6 +28,7 @@ Example of SQP Algortihm
 Find the optimum to the problem:
 
 min f(x) = x1^4 -2*x1*x2^2 + x2^2 + x1^2 -2*x1 +5
+
 s.t. g(x) = -(x1 + 0.25)^2 + 0.75*x2 >= 0
 
 SQP finds the optimum in 9 iterations.
