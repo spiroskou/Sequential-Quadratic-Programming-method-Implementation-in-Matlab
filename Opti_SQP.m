@@ -1,8 +1,10 @@
 %% EXAMPLE OF SQP ALGORITHM
+
 clear variables; close all; clc;
 fprintf("---------------------------------------------------------------\n")
 fprintf("An implementation of Sequential Quadratic Programming method\nin a nonlinear constrained optimization problem\n")
 fprintf("---------------------------------------------------------------\n")
+
 %% INITIAL VALUES - INPUT
 vars = 2; % number of variables
 cons = 1; % number of constraints
@@ -10,6 +12,7 @@ maxIter=100; % max iterations
 x = [-1;4]; % initial guess point
 l =0; % LagrangeMultipliers vector
 H = eye(vars,vars); % Hessian matrix assumed to be identity
+
 %% EVALUATE AT STARTING POINT
 fEval= f(x);
 gEval = g(x);
@@ -17,13 +20,18 @@ gEval = g(x);
 gradfEval = gradf(x);
 gradgEval = gradg(x);
 P = Penalty(fEval,gViol,lViol);
+
 %% SQP ALGORITHM
 for i=1:maxIter
+
     %% SOLVE KKT CONDITIONS FOR THE OPTIMUM OF THE QUADRATIC APPROXIMATION
+    
     sol = SolveKKT(gradfEval,gradgEval,gEval,H);
     xSol = sol(1:vars);
     lSol = sol(vars+1:vars+cons);
+    
     %% IF THE LAGRANGE MULTIPLIER IS NEGATIVE SET IT TO ZERO
+    
     for j = 1:length(lSol)
         if lSol(j)<0 
             sol= H\(-gradfEval)';
@@ -31,7 +39,9 @@ for i=1:maxIter
             lSol(j)=0;
         end
     end
+    
     %% EVALUATE AT NEW CANDIDATE POINT
+    
     xNew = x + xSol; 
     lNew = lSol;
     fEvalNew = f(xNew);
@@ -40,7 +50,9 @@ for i=1:maxIter
     gradgEvalNew = gradg(xNew);
     [gViolNew,lViolNew] = Viols(gEvalNew,lNew);
     PNew = Penalty(fEvalNew,gViolNew,lViolNew);
+    
     %% IF PENALTY FUNCTION INCREASED, LOWER THE STEP BY 0.5
+    
     while PNew-P>1e-4
         xSol = 0.5*xSol;
         xNew = x + xSol;
@@ -51,17 +63,23 @@ for i=1:maxIter
         [gViolNew,lViolNew] = Viols(gEvalNew,lNew);
         PNew = Penalty(fEvalNew,gViolNew,lViolNew);
     end
+    
     %% STOPPING CRITERION
+    
     if norm(xNew(1:vars)-x(1:vars))<=1e-2
         break
     end
+    
     %% UPDATE THE HESSIAN
+    
     gradLEval = gradLagr(gradfEval,gradgEval,lNew,vars); % lnew not l!!!
     gradLEvalNew = gradLagr(gradfEvalNew,gradgEvalNew,lNew,vars);
     Q = gradLEvalNew-gradLEval;
     dx = xNew-x;
     HNew = UpdateH(H,dx,Q);
+    
     %% UPDATE ALL VALUES FOR NEXT ITERATION
+    
     H = HNew;
     fEval = fEvalNew;
     gEval = gEvalNew;
@@ -70,8 +88,11 @@ for i=1:maxIter
     P = PNew;
     x = xNew;
 end
+
 fprintf('SQP: Optimum point:\n x1=%10.4f\n x2=%10.4f\n iterations =%10.0f \n', x(1), x(2), i)
+
 %% FUNCTIONS NEEDED
+
 function y = SolveKKT(gradfEval,gradgEval,gEval,Hessian)
 A = [Hessian -gradgEval';gradgEval 0];
 b = [-gradfEval -gEval]';
