@@ -6,6 +6,7 @@ fprintf("An implementation of Sequential Quadratic Programming method\nin a nonl
 fprintf("---------------------------------------------------------------\n")
 
 % INITIAL VALUES - INPUT
+
 vars = 2; % number of variables
 cons = 1; % number of constraints
 maxIter=100; % max iterations
